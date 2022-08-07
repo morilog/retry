@@ -110,7 +110,7 @@ func Retry(ctx context.Context, operation func() error, opts ...Option) error {
 		select {
 		case <-ctx.Done():
 			return err
-		case <-time.After(cfg.delay * time.Duration(attempt*cfg.delayFactor)):
+		case <-time.After(cfg.delay * time.Duration((attempt+1)*cfg.delayFactor)):
 			continue
 		}
 	}
