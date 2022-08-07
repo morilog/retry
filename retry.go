@@ -107,6 +107,10 @@ func Retry(ctx context.Context, operation func() error, opts ...Option) error {
 			}
 		}
 
+		if attempt-1 == 0 {
+			return err
+		}
+
 		select {
 		case <-ctx.Done():
 			return err
