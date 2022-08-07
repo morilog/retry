@@ -89,10 +89,20 @@ func Retry(ctx context.Context, operation func() error, opts ...Option) error {
 	}
 
 	var err error
-	for attempt := 0; attempt < int(cfg.maxAttempts); attempt++ {
+	for attempt := 1; attempt <= int(cfg.maxAttempts); attempt++ {
 		err = operation()
 		if err == nil {
 			return nil
+		}
+
+		if cfg.onRetry != nil {
+			if err := cfg.onRetry(ctx, attempt); err != nil {
+				return err
+			}
+		}
+
+		if attempt == int(cfg.maxAttempts) {
+			return err
 		}
 
 		if cfg.stopRetryIf != nil {
@@ -101,20 +111,10 @@ func Retry(ctx context.Context, operation func() error, opts ...Option) error {
 			}
 		}
 
-		if cfg.onRetry != nil {
-			if err := cfg.onRetry(ctx, attempt+1); err != nil {
-				return err
-			}
-		}
-
-		if attempt-1 == 0 {
-			return err
-		}
-
 		select {
 		case <-ctx.Done():
 			return err
-		case <-time.After(cfg.delay * time.Duration((attempt+1)*cfg.delayFactor)):
+		case <-time.After(cfg.delay * time.Duration(attempt*cfg.delayFactor)):
 			continue
 		}
 	}
