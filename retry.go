@@ -107,7 +107,7 @@ func Retry(ctx context.Context, operation func() error, opts ...Option) error {
 
 		if cfg.stopRetryIf != nil {
 			if cfg.stopRetryIf(ctx, err) {
-				break
+				return err
 			}
 		}
 
