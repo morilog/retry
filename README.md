@@ -1,4 +1,4 @@
-![Tests](https://github.com/morilog/retry/actions/workflows/go-test.yml/badge.svg)
+![Tests](https://github.com/morilog/retry/actions/workflows/go-test.yaml/badge.svg)
 
 # Retry
 Retry is a golang pure package implements the `retry-pattern` to retry failures until certain attempts in certain time.
