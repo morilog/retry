@@ -6,7 +6,7 @@ Retry is a golang pure package implements the `retry-pattern` to retry failures 
 ## Installation
 At first you need to download the library using `go get`
 ```bash
-$ go get -u github.com/morilog/go-retry
+$ go get -u github.com/morilog/retry
 ```
 
 Or just use it on your package by importing this:
